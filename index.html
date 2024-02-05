@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>COTIZADOR USADOS</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <!-- Bootstrap JS y dependencias (Popper.js y jQuery) -->
+  <link rel="icon" href="img/logo.png" type="image/png">
+
+  <style>
+
+    
+    body {
+    background-color: rgba(68, 58, 58, 0.512); /* Fondo naranja muy transparente */
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    scrollbar-width: thin;
+      scrollbar-color: transparent transparent; /* Define el color de fondo de la barra de desplazamiento y el color del scroll */
+
+  }
+  
+  
+  .logoImg {
+    width: 3rem; /* Ajusta el tamaño según tus preferencias */
+    height: auto; /* Mantén la proporción original de la imagen */
+    margin-right: 10px; /* Ajusta el margen según tus preferencias */
+  }
+  
+  .logoPrincipal {
+    width: 15rem; /* Ajusta el tamaño según tus preferencias */
+    height: auto; /* Mantén la proporción original de la imagen */
+    margin-right: 10px; /* Ajusta el margen según tus preferencias */
+    margin-top: 2em;
+    padding-top:0.7em ;
+  }
+  /*Corregimos valores*/
+  .container {
+    max-height: 80vh; /* Cambié el porcentaje a viewport height (vh) */
+      overflow-y: auto; /* Añadí el scroll vertical si es necesario */
+      scroll-behavior: auto;
+      max-width: 800px;
+      width: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+      margin-bottom: 2em;
+      scrollbar-width: thin;
+      scrollbar-color: transparent transparent; /* Define el color de fondo de la barra de desplazamiento y el color del scroll */
+
+  }
+  
+  h1 {
+    font-size: 3em;
+    text-align: center;
+    font: bold;
+  }
+  
+  label,
+  button {
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  select{
+    margin-bottom: 1em;
+  }
+  
+  select,
+  button {
+    font-size: 16px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /*Dejamos blanco el background*/
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white;
+  }
+  
+  th,
+  td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  th {
+    background-color: #f2f2f2;
+  }
+  
+  button {
+    background-color: #ec6c1c;
+    color: white;
+    cursor: pointer;
+  }
+  .btn0km {
+    background-color: #858b83;
+    color: black;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #f03810;
+  }
+  .btn0km:hover {
+    background-color: rgb(51, 56, 51);
+  }
+  
+  
+  .centrar{
+    text-align: center;
+  }
+  
+    </style>
+</head>
+<body>
+
+  <header class="my-4">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary" style="width: 100%; position: fixed; top: 0;">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="https://auto-roma.odoo.com/"><img src="img/logo.png" alt="Logo" class="logoImg" ></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+           
+            
+           
+          </ul>
+        
+        </div>
+      </div>
+    </nav>
+  
+  </header>
+
+  <div class="container">
+    <div class="row">
+      <div class="col">
+    <div class="centrar">
+      <img src="img/logo.png" alt="" class="logoPrincipal centrar">
+    </div>
+    <h1>COTIZADOR USADOS</h1>
+<!-- Botón para consultar todas las marcas -->
+<button onclick="consultarTodasLasMarcas()">Consultar Todas las Marcas</button>
+
+<!-- Lista desplegable para seleccionar la marca -->
+
+<select id="brandDropdown" onchange="cambiarMarca()">
+  <option value="">Seleccione una marca</option>
+  <!-- Las opciones se llenarán dinámicamente con JavaScript -->
+</select>
+
+<!-- Lista desplegable para seleccionar el grupo -->
+
+<select id="groupDropdown">
+  <option value="">Seleccione un modelo</option>
+  <!-- Las opciones se llenarán dinámicamente con JavaScript -->
+</select>
+
+<button onclick="buscarModelosUsados()"><strong>Buscar Modelos</strong></button>
+<button class="btn0km" onclick="buscarModelos()"><strong>Buscar Modelos 0KM</strong></button>
+  </div>
+</div>
+
+
+  
+  <div class="row">
+    <div class="col">
+
+<!-- Tabla para mostrar modelos -->
+<table id="modelos-table">
+  <thead>
+    <tr>
+      <th>CODIA</th>
+      <th>Descripción</th>
+      <th>Ver Precios</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Las filas se llenarán dinámicamente con JavaScript -->
+  </tbody>
+</table>
+
+<!-- Tabla para mostrar precios -->
+<!-- <table id="precios-table">
+  <thead>
+    <tr>
+      <th>Año</th>
+      <th>Precio</th>
+    </tr>
+  </thead>
+  <tbody>
+    Las filas se llenarán dinámicamente con JavaScript
+  </tbody>
+</table></div> --> </div></div>
+  </div>
+
+<script>
+  
+
+  function consultarTodasLasMarcas() {
+    const apiUrl = '/obtener-marcas';
+
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        llenarMarcasEnDropdown(data.marcas);
+        console.log('Marcas obtenidas:', data.marcas.length);
+      })
+      .catch(error => {
+        console.error('Error al cargar las marcas:', error);
+        // Manejar el error según tus necesidades
+      });
+  }
+
+  function llenarMarcasEnDropdown(marcas) {
+    const brandDropdown = document.getElementById('brandDropdown');
+
+    // Limpiar opciones antiguas
+    brandDropdown.innerHTML = '<option value="">Seleccione una marca</option>';
+
+    // Llenar opciones con las marcas recibidas
+    marcas.forEach(marca => {
+      const option = document.createElement('option');
+      option.value = marca.BrandsId;
+      option.textContent = marca.NombreMarca;
+      brandDropdown.appendChild(option);
+    });
+  }
+
+  async function llenarGruposEnDropdown(brandId) {
+    const apiUrlGrupos = `/obtener-grupos/${brandId}`;
+
+    try {
+      const response = await fetch(apiUrlGrupos);
+      const data = await response.json();
+
+      const groupDropdown = document.getElementById('groupDropdown');
+
+      // Limpiar opciones antiguas
+      groupDropdown.innerHTML = '<option value="">Seleccione un grupo</option>';
+
+      // Llenar opciones con los grupos recibidos
+      data.grupos.forEach(grupo => {
+        const option = document.createElement('option');
+        option.value = grupo.GroupId;
+        option.textContent = grupo.NombreGrupo;
+        groupDropdown.appendChild(option);
+      });
+
+      console.log('Grupos obtenidos:', data.grupos.length);
+    } catch (error) {
+      console.error('Error al cargar los grupos:', error);
+      // Manejar el error según tus necesidades
+    }
+  }
+
+  function cambiarMarca() {
+    const brandDropdown = document.getElementById('brandDropdown');
+    const selectedBrandId = brandDropdown.value;
+
+    if (selectedBrandId) {
+      llenarGruposEnDropdown(selectedBrandId);
+    }
+  }
+
+  async function buscarModelosUsados() {
+    const brandDropdown = document.getElementById('brandDropdown');
+    const groupDropdown = document.getElementById('groupDropdown');
+    const selectedBrandId = brandDropdown.value;
+    const selectedGroupId = groupDropdown.value;
+
+    if (!selectedBrandId) {
+      alert('Seleccione una marca antes de buscar modelos.');
+      return;
+    }
+
+    if (!selectedGroupId) {
+      alert('Seleccione un grupo antes de buscar modelos.');
+      return;
+    }
+
+    const apiUrlModelos = `/obtener-modelos-usados/${selectedBrandId}/${selectedGroupId}`;
+
+    try {
+      const response = await fetch(apiUrlModelos);
+      const data = await response.json();
+
+      console.log('Modelos obtenidos:', data.modelos);
+
+      // Mostrar modelos en una tabla (puedes adaptar esta parte según tu necesidad)
+      const modelosTable = document.getElementById('modelos-table');
+      modelosTable.innerHTML = '<thead><tr><th>CODIA</th><th>Descripción</th><th>Ver Precios</th></tr></thead><tbody></tbody>';
+
+      data.modelos.forEach(modelo => {
+        const row = modelosTable.querySelector('tbody').insertRow();
+        row.insertCell(0).textContent = modelo.codia;
+        row.insertCell(1).textContent = modelo.description;
+
+        // Botón para ver precios
+        const btnVerPrecios = document.createElement('button');
+        btnVerPrecios.textContent = 'Ver Precios';
+        btnVerPrecios.onclick = () => verPreciosUsados(modelo.codia);
+        row.insertCell(2).appendChild(btnVerPrecios);
+      });
+    } catch (error) {
+      console.error('Error al cargar los modelos:', error);
+      // Manejar el error según tus necesidades
+    }
+  }
+
+ 
+  async function verPreciosUsados(codia) {
+  const apiUrlPrecios = `/obtener-precios-usados/${codia}`;
+
+  try {
+    const response = await fetch(apiUrlPrecios);
+    const data = await response.json();
+
+    console.log('Precios obtenidos:', data.precios);
+
+    // Construir un array de objetos para SweetAlert2
+    const preciosOptions = data.precios.map(precio => ({
+      // Este será el valor interno
+      text: `$${precio.price}`, // Este será el valor visualmente mostrado
+      year: precio.year, // Añadir una propiedad year al objeto
+    }));
+
+    // Mostrar SweetAlert2 con un desplegable
+    const { value: selectedPrice } = await Swal.fire({
+      title: 'Selecciona un precio para ver el año',
+      input: 'select',
+      inputOptions: preciosOptions.reduce((acc, precio) => {
+        if (!acc[precio.year]) {
+          acc[precio.year] = []; // Inicializar el grupo si no existe
+        }
+        acc[precio.year].push(`${precio.text}`); // Añadir la opción al grupo
+        return acc;
+      }, {}),
+      inputPlaceholder: 'Seleccione un precio',
+    });
+
+    // Verificar si se seleccionó un precio
+    if (selectedPrice) {
+      // Aquí puedes realizar cualquier acción adicional con el precio seleccionado
+      const selectedYear = data.precios.find(precio => precio.price === selectedPrice).year;
+      Swal.fire({
+        title: `Año para el precio $${selectedPrice}`,
+        text: `El año es: ${selectedYear}`,
+        icon: 'info',
+      });
+    }
+  } catch (error) {
+    console.error('Error al cargar los precios:', error);
+    // Manejar el error según tus necesidades
+  }
+}
+
+async function buscarModelos() {
+    const brandDropdown = document.getElementById('brandDropdown');
+    const groupDropdown = document.getElementById('groupDropdown');
+    const selectedBrandId = brandDropdown.value;
+    const selectedGroupId = groupDropdown.value;
+
+    if (!selectedBrandId) {
+      alert('Seleccione una marca antes de buscar modelos.');
+      return;
+    }
+
+    if (!selectedGroupId) {
+      alert('Seleccione un grupo antes de buscar modelos.');
+      return;
+    }
+
+    const apiUrlModelos = `/obtener-modelos/${selectedBrandId}/${selectedGroupId}`;
+
+    try {
+      const response = await fetch(apiUrlModelos);
+      const data = await response.json();
+
+      console.log('Modelos obtenidos:', data.modelos);
+
+      // Mostrar modelos en una tabla (puedes adaptar esta parte según tu necesidad)
+      const modelosTable = document.getElementById('modelos-table');
+      modelosTable.innerHTML = '<thead><tr><th>CODIA</th><th>Descripción</th><th>Ver Precios</th></tr></thead><tbody></tbody>';
+
+      data.modelos.forEach(modelo => {
+        const row = modelosTable.querySelector('tbody').insertRow();
+        row.insertCell(0).textContent = modelo.codia;
+        row.insertCell(1).textContent = modelo.description;
+
+        // Botón para ver precios
+        const btnVerPrecios = document.createElement('button');
+        btnVerPrecios.textContent = 'Ver Precios';
+        btnVerPrecios.onclick = () => verPrecios(modelo.codia);
+        row.insertCell(2).appendChild(btnVerPrecios);
+      });
+    } catch (error) {
+      console.error('Error al cargar los modelos:', error);
+      // Manejar el error según tus necesidades
+    }
+  }
+
+
+  async function verPrecios(codia) {
+  const apiUrlPrecios = `/obtener-precios/${codia}`;
+
+  try {
+    const response = await fetch(apiUrlPrecios);
+    
+    if (!response.ok) {
+      throw new Error(`Error al cargar el list_price: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+
+    if (!data || !data.hasOwnProperty('list_price')) {
+      // Mostrar SweetAlert2 indicando que no hay precios
+      Swal.fire({
+        title: 'No hay precios',
+        text: 'No hay precios actualmente para el modelo 0km. Consulte nuevamente.',
+        icon: 'warning'
+      });
+      return;
+    }
+
+    const listPrice = data.list_price;
+
+    console.log('List Price obtenido:', listPrice);
+
+    // Mostrar SweetAlert2 con el list_price
+    Swal.fire({
+      title: 'Precio actual',
+      text: `El precio es: ${listPrice}`,
+      icon: 'success'
+    });
+  } catch (error) {
+    console.error('Error al cargar el list_price:', error.message);
+
+    // Mostrar SweetAlert2 indicando que hubo un error
+    Swal.fire({
+      title: 'Error',
+      text: 'No tenemos disponible actualmente precios para este modelo en 0km.',
+      icon: 'icon'
+    });
+  }
+}
+
+
+  async function buscarPreciosPorCodia() {
+  const codiaInput = document.getElementById('codiaInput');
+  const codia = codiaInput.value.trim();
+
+  if (!codia) {
+    alert('Por favor, ingrese un CODIA válido.');
+    return;
+  }
+
+  const apiUrlPrecios = `/obtener-precios/${codia}`;
+
+  try {
+    const response = await fetch(apiUrlPrecios);
+    const data = await response.json();
+
+    console.log('Precios obtenidos por CODIA:', data.precios);
+
+    // Mostrar precios en una tabla (puedes adaptar esta parte según tu necesidad)
+    const preciosTable = document.getElementById('modelos-table');
+    preciosTable.innerHTML = '<thead><tr><th>Año</th><th>Precio</th></tr></thead><tbody></tbody>';
+
+    data.precios.forEach(precio => {
+      const row = preciosTable.querySelector('tbody').insertRow();
+      row.insertCell(0).textContent = precio.year;
+      row.insertCell(1).textContent = precio.price;
+    });
+  } catch (error) {
+    console.error('Error al cargar los precios por CODIA:', error);
+    // Manejar el error según tus necesidades
+  }
+}
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+
+</body>
+</html>
